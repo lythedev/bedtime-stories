@@ -1,21 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Story } from "@/types/story";
+import { getStoryById } from "@/lib/stories";
 
 export default function FavoritesPage() {
   // This would typically come from a database or state management
   // For now, we'll use static data as a placeholder
-  const favoriteStories = [
-    {
-      id: 2,
-      title: "Adventures of Timmy the Turtle",
-      description: "Follow Timmy as he discovers the wonders of the ocean.",
-      coverImage: "https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f",
-      ageRange: "4-8 years",
-      duration: "8 mins",
-      category: "adventure",
+  const favoriteStoryIds = ["2"]; // Example favorite story IDs
+  const favoriteStories = favoriteStoryIds
+    .map((id) => getStoryById(id))
+    .filter((story): story is Story => !!story)
+    .map((story) => ({
+      ...story,
       dateAdded: "Nov 15, 2023",
-    },
-  ];
+    }));
 
   const hasFavorites = favoriteStories.length > 0;
 
