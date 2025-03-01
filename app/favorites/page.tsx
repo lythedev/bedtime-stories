@@ -1,19 +1,34 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Story } from "@/types/story";
-import { getStoryById } from "@/lib/stories";
+import { useState, useEffect } from "react";
+import { getFavoriteStories, toggleFavorite } from "@/lib/favorites";
 
 export default function FavoritesPage() {
-  // This would typically come from a database or state management
-  // For now, we'll use static data as a placeholder
-  const favoriteStoryIds = ["2"]; // Example favorite story IDs
-  const favoriteStories = favoriteStoryIds
-    .map((id) => getStoryById(id))
-    .filter((story): story is Story => !!story)
-    .map((story) => ({
-      ...story,
-      dateAdded: "Nov 15, 2023",
-    }));
+  const [favoriteStories, setFavoriteStories] = useState<ReturnType<typeof getFavoriteStories>>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  // Initialize favorites from localStorage
+  useEffect(() => {
+    setIsClient(true);
+    setFavoriteStories(getFavoriteStories());
+  }, []);
+
+  // Handle removing a story from favorites
+  const handleRemoveFavorite = (storyId: string) => {
+    toggleFavorite(storyId);
+    setFavoriteStories(getFavoriteStories());
+  };
+
+  // Only show content after client-side hydration to avoid hydration mismatch
+  if (!isClient) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <p className="text-gray-500">Loading favorites...</p>
+      </div>
+    );
+  }
 
   const hasFavorites = favoriteStories.length > 0;
 
@@ -36,6 +51,7 @@ export default function FavoritesPage() {
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl story-card relative"
             >
               <button
+                onClick={() => handleRemoveFavorite(story.id)}
                 className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-md hover:bg-red-50"
                 aria-label="Remove from favorites"
               >

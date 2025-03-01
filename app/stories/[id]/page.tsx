@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { getStoryById, getRelatedStories } from "@/lib/stories";
+import { isStoryFavorite, toggleFavorite } from "@/lib/favorites";
 import { notFound } from "next/navigation";
 
 export default function StoryPage({ params }: { params: { id: string } }) {
   const story = getStoryById(params.id);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // Handle case where story is not found
   if (!story) {
@@ -12,6 +17,17 @@ export default function StoryPage({ params }: { params: { id: string } }) {
   }
 
   const relatedStories = getRelatedStories(params.id);
+
+  // Initialize favorite state
+  useEffect(() => {
+    setIsFavorite(isStoryFavorite(params.id));
+  }, [params.id]);
+
+  // Handle favorite toggle
+  const handleFavoriteToggle = () => {
+    const newFavoriteState = toggleFavorite(params.id);
+    setIsFavorite(newFavoriteState);
+  };
 
   // Format the story content with proper paragraphs
   const formattedContent = story.content
@@ -52,13 +68,20 @@ export default function StoryPage({ params }: { params: { id: string } }) {
           <div className="prose max-w-none text-gray-800 leading-relaxed">{formattedContent}</div>
 
           <div className="mt-8 flex items-center justify-between">
-            <button className="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-indigo-200">
+            <button
+              onClick={handleFavoriteToggle}
+              className={`px-4 py-2 rounded-full flex items-center gap-2 transition-colors ${
+                isFavorite
+                  ? "bg-pink-100 text-pink-800 hover:bg-pink-200"
+                  : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
-                fill="none"
+                fill={isFavorite ? "currentColor" : "none"}
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -66,7 +89,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
               >
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
               </svg>
-              Add to Favorites
+              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             </button>
 
             <button className="bg-indigo-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-indigo-700">
