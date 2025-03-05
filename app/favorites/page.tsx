@@ -3,22 +3,55 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getFavoriteStories, toggleFavorite } from "@/lib/favorites";
+import { getFavoriteIds, toggleFavorite } from "@/lib/favorites";
+import { getStoryByIdAsync } from "@/lib/stories";
+import { Story } from "@/types/story";
 
 export default function FavoritesPage() {
-  const [favoriteStories, setFavoriteStories] = useState<ReturnType<typeof getFavoriteStories>>([]);
+  const [favoriteStories, setFavoriteStories] = useState<(Story & { dateAdded: string })[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
 
-  // Initialize favorites from localStorage
+  // Initialize favorites from localStorage and fetch story data
   useEffect(() => {
     setIsClient(true);
-    setFavoriteStories(getFavoriteStories());
+
+    const fetchFavoriteStories = async () => {
+      setIsLoading(true);
+      try {
+        const favoriteIds = getFavoriteIds();
+
+        // Fetch each story by ID
+        const storiesPromises = favoriteIds.map(async (id) => {
+          const story = await getStoryByIdAsync(id);
+          if (!story) return null;
+
+          return {
+            ...story,
+            dateAdded: new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            }),
+          };
+        });
+
+        const stories = await Promise.all(storiesPromises);
+        setFavoriteStories(stories.filter((story): story is Story & { dateAdded: string } => story !== null));
+      } catch (error) {
+        console.error("Error fetching favorite stories:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavoriteStories();
   }, []);
 
   // Handle removing a story from favorites
   const handleRemoveFavorite = (storyId: string) => {
     toggleFavorite(storyId);
-    setFavoriteStories(getFavoriteStories());
+    setFavoriteStories((prev) => prev.filter((story) => story.id !== storyId));
   };
 
   // Only show content after client-side hydration to avoid hydration mismatch
@@ -26,6 +59,15 @@ export default function FavoritesPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <p className="text-gray-500">Loading favorites...</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-600 mb-4 mr-2"></div>
+        <p className="text-gray-500">Loading your favorite stories...</p>
       </div>
     );
   }

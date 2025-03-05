@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedStories } from "@/lib/stories";
+import { getFeaturedStoriesAsync } from "@/lib/stories";
 
-export default function Home() {
-  const featuredStories = getFeaturedStories(3);
+export const dynamic = "force-dynamic"; // Don't cache this page
+
+export default async function Home() {
+  const featuredStories = await getFeaturedStoriesAsync(3);
 
   return (
     <div className="space-y-12">
