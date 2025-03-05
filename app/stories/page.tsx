@@ -14,13 +14,13 @@ export default async function StoriesPage() {
   return (
     <div className="space-y-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-indigo-800 mb-4">Explore Our Stories</h1>
+        <h1 className="text-4xl font-bold text-primary-800 mb-4">Explore Our Stories</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Discover a world of imagination with our collection of bedtime stories for children of all ages.
         </p>
         <Link
           href="/stories/create"
-          className="mt-6 inline-block bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-colors"
+          className="mt-6 inline-block bg-primary-600 text-white px-6 py-3 rounded-full hover:bg-primary-700 transition-colors"
         >
           Create Your Own Story
         </Link>

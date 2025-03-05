@@ -71,7 +71,7 @@ export default function CreateStoryPage() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-indigo-800 mb-6">Create a New Story</h1>
+      <h1 className="text-3xl font-bold text-primary-800 mb-6">Create a New Story</h1>
 
       {error && <div className="bg-red-50 text-red-700 p-4 rounded-md mb-6">{error}</div>}
       {debugInfo && <div className="bg-blue-50 text-blue-700 p-4 rounded-md mb-6">{debugInfo}</div>}
@@ -86,7 +86,7 @@ export default function CreateStoryPage() {
             id="title"
             name="title"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function CreateStoryPage() {
             id="description"
             name="description"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
 
@@ -114,7 +114,7 @@ export default function CreateStoryPage() {
               name="ageRange"
               placeholder="e.g. 3-6 years"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function CreateStoryPage() {
               name="duration"
               placeholder="e.g. 5 mins"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
 
@@ -140,7 +140,7 @@ export default function CreateStoryPage() {
               id="category"
               name="category"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             >
               <option value="">Select a category</option>
               {categories.map((category) => (
@@ -161,7 +161,7 @@ export default function CreateStoryPage() {
             id="coverImage"
             name="coverImage"
             placeholder="https://example.com/image.jpg"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
           />
           <p className="text-xs text-gray-500 mt-1">
             Leave blank to use a default image. In a real app, you would upload an image here.
@@ -178,7 +178,7 @@ export default function CreateStoryPage() {
             rows={12}
             required
             placeholder="Once upon a time..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
           ></textarea>
           <p className="text-xs text-gray-500 mt-1">Use blank lines to separate paragraphs.</p>
         </div>
@@ -194,7 +194,7 @@ export default function CreateStoryPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+            className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50"
           >
             {isSubmitting ? "Creating..." : "Create Story"}
           </button>

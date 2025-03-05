@@ -25,7 +25,7 @@ export default function FavoriteButton({ storyId }: FavoriteButtonProps) {
 
   if (!isClient) {
     return (
-      <button className="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full flex items-center gap-2">
+      <button className="bg-primary-100 text-primary-800 px-4 py-2 rounded-full flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -48,7 +48,9 @@ export default function FavoriteButton({ storyId }: FavoriteButtonProps) {
     <button
       onClick={handleFavoriteToggle}
       className={`px-4 py-2 rounded-full flex items-center gap-2 transition-colors ${
-        isFavorite ? "bg-pink-100 text-pink-800 hover:bg-pink-200" : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+        isFavorite
+          ? "bg-primary-100 text-primary-800 hover:bg-primary-200"
+          : "bg-primary-100 text-primary-800 hover:bg-primary-200"
       }`}
     >
       <svg
